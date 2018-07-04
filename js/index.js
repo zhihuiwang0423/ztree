@@ -152,6 +152,7 @@ zTreeNodes =
           var treeObj = $.fn.zTree.getZTreeObj("tree");
           var nodes = treeObj.getNodes();
           // var nodes =  treeObj.transformToArray(treeObj.getNodes());;
-          console.log(nodes)
+          // console.log(nodes)
+          window.localStorage.setItem('previewData', JSON.stringify(nodes))
       })
     });
