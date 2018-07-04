@@ -22,7 +22,14 @@ var setting = {
             beforeRemove: beforeRemove,
             beforeRename: beforeRename,
             onRemove: onRemove,
-            onRename: onRename
+            onRename: onRename,
+            onClick: zTreeOnClick
+        },
+        async: {
+          enable: true,
+          dataType: "text",
+          url: "http://host/getNode.php",
+          autoParam: ["id", "name"]
         }
     };
 
@@ -46,6 +53,9 @@ zTreeNodes =
     
     ]
     var log, className = "dark";
+    function zTreeOnClick(event, treeId, treeNode) {
+      // alert(treeNode.tId + ", " + treeNode.name);
+  };
     function zTreeOnDrag(event, treeId, treeNodes) {
         console.log(treeNodes)
     };
@@ -134,8 +144,14 @@ zTreeNodes =
         console.log(zTreeNodes)
         $('#save').click(function(){
             var treeObj = $.fn.zTree.getZTreeObj("tree");
-            var nodes = treeObj.getNodes();
-            // var nodes =  treeObj.transformToArray(treeObj.getNodes());;
+            // var nodes = treeObj.getNodes();
+            var nodes =  treeObj.transformToArray(treeObj.getNodes());;
             console.log(nodes)
         })
+        $('#preview').click(function(){
+          var treeObj = $.fn.zTree.getZTreeObj("tree");
+          var nodes = treeObj.getNodes();
+          // var nodes =  treeObj.transformToArray(treeObj.getNodes());;
+          console.log(nodes)
+      })
     });
