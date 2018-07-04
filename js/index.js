@@ -17,6 +17,7 @@ var setting = {
         },
         callback: {
             beforeDrag: beforeDrag,
+            onDrag: zTreeOnDrag,
             beforeEditName: beforeEditName,
             beforeRemove: beforeRemove,
             beforeRename: beforeRename,
@@ -45,7 +46,9 @@ zTreeNodes =
     
     ]
     var log, className = "dark";
-
+    function zTreeOnDrag(event, treeId, treeNodes) {
+        console.log(treeNodes)
+    };
     function beforeDrag(treeId, treeNodes) {
         return true;
     }
@@ -128,4 +131,11 @@ zTreeNodes =
     
     $(document).ready(function(){
         $.fn.zTree.init($("#tree"), setting, zTreeNodes);
+        console.log(zTreeNodes)
+        $('#save').click(function(){
+            var treeObj = $.fn.zTree.getZTreeObj("tree");
+            var nodes = treeObj.getNodes();
+            // var nodes =  treeObj.transformToArray(treeObj.getNodes());;
+            console.log(nodes)
+        })
     });
