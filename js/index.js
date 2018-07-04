@@ -128,4 +128,10 @@ zTreeNodes =
     
     $(document).ready(function(){
         $.fn.zTree.init($("#tree"), setting, zTreeNodes);
+        $('#save').click(function(){
+          debugger
+          var treeObj = $.fn.zTree.getZTreeObj('tree');
+          var nodes = treeObj.transformToArray(treeObj.getNodes())
+          console.log(nodes)
+        })
     });
