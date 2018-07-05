@@ -23,7 +23,8 @@ var setting = {
             beforeRename: beforeRename,
             onRemove: onRemove,
             onRename: onRename,
-            onClick: zTreeOnClick
+            onClick: zTreeOnClick,
+            onDrop: zTreeOnDrop
         },
         async: {
           enable: true,
@@ -36,14 +37,14 @@ var setting = {
 zTreeNodes =
  [
     { id:1, pId:0, name:"can drag 1", open:true},
-    { id:11, pId:1, name:"can drag 1-1"},
+    { id:11, pId:1, name:"我是二级\n我是二级我是二级我是二级\n我是二级我是二级我是二级我是二级"},
     { id:12, pId:1, name:"can drag 1-2", open:true},
     { id:121, pId:12, name:"can drag 1-2-1"},
     { id:122, pId:12, name:"can drag 1-2-2"},
     { id:123, pId:12, name:"can drag 1-2-3"},
     { id:13, pId:1, name:"can't drag 1-3", open:true, drag:false},
-    { id:131, pId:13, name:"can't drag 1-3-1", drag:false},
-    { id:132, pId:13, name:"can't drag 1-3-2", open: true},
+    { id:131, pId:13, name:"如果我的内容多特别多，\n特别长，哈哈哈", drag:false},
+    { id:132, pId:13, name:"如果我的内容多特别多，特别长，哈哈哈", open: true},
     {id: 1321, pId: 132, name: "can't drag 1-3-2-1"},
     { id:133, pId:13, name:"can drag 1-3-3",open: true},
     { id:14, pId:1, name:"can't drag 1-4", open:true, drag:false},
@@ -53,14 +54,21 @@ zTreeNodes =
     
     ]
     var log, className = "dark";
+    function zTreeOnDrop(event, treeId, treeNodes, targetNode, moveType) {
+      alert(treeNodes.length + "," + (targetNode ? (targetNode.tId + ", " + targetNode.name) : "isRoot" ));
+  };
     function zTreeOnClick(event, treeId, treeNode) {
       // alert(treeNode.tId + ", " + treeNode.name);
   };
     function zTreeOnDrag(event, treeId, treeNodes) {
-        console.log(treeNodes)
+        // console.log(treeNodes)
     };
     function beforeDrag(treeId, treeNodes) {
+      console.log(treeNodes)
+
         return true;
+        
+        
     }
     function beforeEditName(treeId, treeNode) {
         className = (className === "dark" ? "":"dark");
@@ -154,5 +162,7 @@ zTreeNodes =
           // var nodes =  treeObj.transformToArray(treeObj.getNodes());;
           // console.log(nodes)
           window.localStorage.setItem('previewData', JSON.stringify(nodes))
+          window.localStorage.setItem('Level', 6)
+          window.location.href = 'preview.html'
       })
     });
