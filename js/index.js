@@ -17,6 +17,7 @@ var setting = {
         },
         callback: {
             beforeDrag: beforeDrag,
+            beforeDrop: zTreeBeforeDrop,
             onDrag: zTreeOnDrag,
             beforeEditName: beforeEditName,
             beforeRemove: beforeRemove,
@@ -24,14 +25,16 @@ var setting = {
             onRemove: onRemove,
             onRename: onRename,
             onClick: zTreeOnClick,
-            onDrop: zTreeOnDrop
+            onDrop: zTreeOnDrop,
+            onMouseUp: zTreeOnMouseUp
         },
         async: {
           enable: true,
           dataType: "text",
           url: "http://host/getNode.php",
           autoParam: ["id", "name"]
-        }
+        },
+        treeNode: { name:"父节点1", icon:"/img/parent.gif"},
     };
 
 zTreeNodes =
@@ -42,33 +45,54 @@ zTreeNodes =
     { id:121, pId:12, name:"can drag 1-2-1"},
     { id:122, pId:12, name:"can drag 1-2-2"},
     { id:123, pId:12, name:"can drag 1-2-3"},
-    { id:13, pId:1, name:"can't drag 1-3", open:true, drag:false},
-    { id:131, pId:13, name:"如果我的内容多特别多，\n特别长，哈哈哈", drag:false},
+    { id:13, pId:1, name:"can't drag 1-3", open:true, },
+    { id:131, pId:13, name:"如果我的内容多特别多，\n特别长，哈哈哈", },
     { id:132, pId:13, name:"如果我的内容多特别多，特别长，哈哈哈", open: true},
     {id: 1321, pId: 132, name: "can't drag 1-3-2-1"},
     { id:133, pId:13, name:"can drag 1-3-3",open: true},
-    { id:14, pId:1, name:"can't drag 1-4", open:true, drag:false},
-    { id:141, pId:14, name:"can't drag 1-4-1", drag:false},
-    { id:142, pId:14, name:"can't drag 1-4-2", drag:false},
+    { id:14, pId:1, name:"can't drag 1-4", open:true, },
+    { id:141, pId:14, name:"can't drag 1-4-1", },
+    { id:142, pId:14, name:"can't drag 1-4-2 drag:false", drag:false},
     { id:143, pId:14, name:"can drag 1-4-3"},
     
     ]
     var log, className = "dark";
+    function zTreeBeforeDrop(treeId, treeNodes, targetNode, moveType) {
+      // treeNodes 当前拖拽选中的节点 targetNode是最后放入的位置节点信息
+      if(confirm('确认拖拽吗？')){
+        console.log("treeId :" + treeId)
+        console.log( treeNodes)
+        console.log(targetNode)
+        console.log("moveType :" + moveType)
+        return true;
+      } else {
+        console.log('false')
+        return false;
+      }
+  };
+    function zTreeOnMouseUp(event, treeId, treeNode) {
+      
+      // alert(treeNode ? treeNode.tId + ", " + treeNode.name : "isRoot");
+  };
     function zTreeOnDrop(event, treeId, treeNodes, targetNode, moveType) {
-      alert(treeNodes.length + "," + (targetNode ? (targetNode.tId + ", " + targetNode.name) : "isRoot" ));
+      
+      // alert(treeNodes.length + "," + (targetNode ? (targetNode.tId + ", " + targetNode.name) : "isRoot" ));
   };
     function zTreeOnClick(event, treeId, treeNode) {
       // alert(treeNode.tId + ", " + treeNode.name);
   };
     function zTreeOnDrag(event, treeId, treeNodes) {
-        // console.log(treeNodes)
+        // 选中后，鼠标开始拖拽时生效
+        // alert(treeNodes.length);
+        
     };
     function beforeDrag(treeId, treeNodes) {
-      console.log(treeNodes)
-
-        return true;
-        
-        
+      // 根节点和禁止拖拽的节点不能拖拽
+      for(var i=0;i<treeNodes.length;i++){
+        　　if(treeNodes[i].drag == false || !treeNodes[i].getParentNode())
+        　　　return false;　　　
+        　}
+        　return true;
     }
     function beforeEditName(treeId, treeNode) {
         className = (className === "dark" ? "":"dark");
@@ -113,7 +137,7 @@ zTreeNodes =
         return !treeNode.isLastNode;
     }
     function showLog(str) {
-        debugger
+        // debugger
         if (!log) log = $("#log");
         log.append("<li class='"+className+"'>"+str+"</li>");
         if(log.children("li").length > 8) {
@@ -149,18 +173,14 @@ zTreeNodes =
     
     $(document).ready(function(){
         $.fn.zTree.init($("#tree"), setting, zTreeNodes);
-        console.log(zTreeNodes)
         $('#save').click(function(){
             var treeObj = $.fn.zTree.getZTreeObj("tree");
             // var nodes = treeObj.getNodes();
             var nodes =  treeObj.transformToArray(treeObj.getNodes());;
-            console.log(nodes)
         })
         $('#preview').click(function(){
           var treeObj = $.fn.zTree.getZTreeObj("tree");
           var nodes = treeObj.getNodes();
-          // var nodes =  treeObj.transformToArray(treeObj.getNodes());;
-          // console.log(nodes)
           window.localStorage.setItem('previewData', JSON.stringify(nodes))
           window.localStorage.setItem('Level', 6)
           window.location.href = 'preview.html'
