@@ -1,15 +1,17 @@
 
-    // var previewData = JSON.parse(localStorage.getItem('previewData'))
-    //     console.log(previewData)
-    // $('#main').width(previewData[0].count*200);
-    // $('#main').height(previewData[0].children.length*200);
-    // console.log($('#main').height())
+    var previewData = JSON.parse(localStorage.getItem('previewData'))
+        console.log(previewData)
+    $('#main').width(10*300); // 最底层叶子节点数值*300
+    $('#main').height(previewData[0].children.length*200); // 多少层级
+    // $('#main').width(window.innerWidth-50)
+    // $('#main').height(window.innerHeight-50)
+    console.log($('#main').height())
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
-        
+
         // 指定图表的配置项和数据
         option = {
-          // calculable : true,
+          calculable : true,
           toolbox: {
             show: true,
             　　feature: {
@@ -26,14 +28,14 @@
                   name:'树图',
                   type:'tree',
                   orient: 'vertical',  // vertical horizontal radial
-                  rootLocation: {x:'center', y: '120px'}, // 根节点位置  {x: 'center',y: 10}
+                  rootLocation: {x:'left', y: '120px'}, // 根节点位置  {x: 'center',y: 10}
                   // direction:'inverse',
-                  roam:false,
+                  roam:true, // 是否开启滚轮放大缩小
                   layerPadding:100,
                   nodePadding: 60,
                   symbol: 'none',// circle' | 'rectangle' | 'triangle' | 'diamond' |
                   //'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond' 
-                  symbolSize: [140, 50],
+                  symbolSize: [190, 50],
                   itemStyle: {
                       normal: {
                           label: {
@@ -41,7 +43,7 @@
                             position: 'inside',
                             textStyle: {
                                 color: '#111',
-                                fontSize: 15,
+                                fontSize: 12,
                                 fontWeight:  'bolder'
                             }
                           },
@@ -53,9 +55,6 @@
                           areaStyle: {
                             color: '#dd9'
                           },
-                          nodeStyle: {
-                            color: '#122'
-                          },
                           labelLine: {
                             show: true,
                             lineStyle: {
@@ -63,253 +62,255 @@
                                 length: 20
                             }
                         }
-                        
                       },
                       emphasis: {
-                          label: {
-                              show: false
-                          }
+                        label: {
+                            show: false
+                        },
+                        labelLine: {
+                            show: false
+                        }
                       }
                   },
-                //   data:[previewData[0]]
-                  data: [
-                      {
-                          name: '卓朗科技\n有限公司\n智慧',
-                          children: [
-                          {
-                                  name: '一级一级一\n级一级一级一级\n一级一级一级',
-                                  children: [
-                                      {
-                                          name: '一级一级一级一级一级一级一级一级一级一级一级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                              },
-                              {
-                                  name: '一级',
-                                  children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                              },
-                              {
-                                  name: '一级',
-                                  children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                              },
-                              {
-                                  name: '一级',
-                                  children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                              },
-                              {
-                                  name: '一级',
-                                  children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                              },
-                              {
-                                  name: '一级',
-                                  children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                              },
-                              {
-                                  name: '一级',
-                                  children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                              },
-                              {
-                                  name: '一级',
-                                  children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                              },
-                              {
-                                  name: '苹果',
-                                  children: [
-                                      {
-                                          name: '二级',
-                                          children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                              },
-                              {
-                                  name: '华为',
-                                  children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                          children: [
-                                      {
-                                          name: '二级',
-                                          children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                          children: [
-                                      {
-                                          name: '二级',
-                                          children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                          children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                          children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                                      },
-                                      {
-                                          name: '小米2',
-                                          children: [
-                                      {
-                                          name: '二级',
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                                      },
-                                      {
-                                          name: '小米2',
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                                      },
-                                      {
-                                          name: '小米3',
-                                      }
-                                  ]
-                              },
-                              {
-                                  name: '联想',
-                              }
-                          ]
-                      }
-                  ]
+                  data:[previewData[0]],
+                //   data: [
+                //       {
+                //           name: '卓朗科技\n有限公司\n智慧',
+                //           children: [
+                //           {
+                //                   name: '一级一级一\n级一级一级一级\n一级一级一级',
+                //                   children: [
+                //                       {
+                //                           name: '一级一级一级一级一级一级一级一级一级一级一级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //               },
+                //               {
+                //                   name: '一级',
+                //                   children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //               },
+                //               {
+                //                   name: '一级',
+                //                   children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //               },
+                //               {
+                //                   name: '一级',
+                //                   children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //               },
+                //               {
+                //                   name: '一级',
+                //                   children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //               },
+                //               {
+                //                   name: '一级',
+                //                   children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //               },
+                //               {
+                //                   name: '一级',
+                //                   children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //               },
+                //               {
+                //                   name: '一级',
+                //                   children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //               },
+                //               {
+                //                   name: '苹果',
+                //                   children: [
+                //                       {
+                //                           name: '二级',
+                //                           children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //               },
+                //               {
+                //                   name: '华为',
+                //                   children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                           children: [
+                //                       {
+                //                           name: '二级',
+                //                           children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                           children: [
+                //                       {
+                //                           name: '二级',
+                //                           children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                           children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                           children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                           children: [
+                //                       {
+                //                           name: '二级',
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //                       },
+                //                       {
+                //                           name: '小米2',
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //                       },
+                //                       {
+                //                           name: '小米3',
+                //                       }
+                //                   ]
+                //               },
+                //               {
+                //                   name: '联想',
+                //               }
+                //           ]
+                //       }
+                //   ]
               }
           ]
         };

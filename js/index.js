@@ -41,7 +41,7 @@ var setting = {
 zTreeNodes =
  [
     { id:1, pId:0, name:"can drag 1", open:true,drag:false,count: 10},
-    { id:11, pId:1, name:"我是二级\n我是二级我是二级我是二级\n我是二级我是二级我是二级我是二级",count:2},
+    { id:11, pId:1, name:"一二三四五六七八九十",count:2},
     { id:12, pId:1, name:"can drag 1-2", open:true,count:2},
     { id:121, pId:12, name:"can drag 1-2-1",count:2},
     { id:122, pId:12, name:"can drag 1-2-2",count:2},
@@ -54,7 +54,8 @@ zTreeNodes =
     { id:14, pId:1, name:"can't drag 1-4", open:true,count:2 },
     { id:141, pId:14, name:"can't drag 1-4-1",count:2},
     { id:142, pId:14, name:"can't drag 1-4-2 drag:false",count:2 },
-    { id:143, pId:14, name:"can drag 1-4-3",count:2},
+    { id:143, pId:14, name:"can drag 1-4-3",count:2,open:true},
+    {id: 1431, pId: 143, name: "can't drag 1-4-3-1",count:2},
     
     ]
     var log, className = "dark";
@@ -70,22 +71,30 @@ zTreeNodes =
       if(targetNode.level === 0) {
           layer.alert('不能拖拽到根节点')
           return false
-      }       
-    //   layer.open({
-    //       content: '确认拖拽吗？',
-    //       btn: ['确认', '取消'],
-    //       yes: function(index, layero){ layer.close(index)},
-    //       btn2:function(index, layero){
-    //           layer.close(index)
-    //           return false; 
-    //         }
-    //   })
-      if(confirm('确认拖拽吗？')){      
-        return true;
-      } else {
-        console.log('false')
-        return false;
-      }
+      }           
+        var zTree = $.fn.zTree.getZTreeObj('tree');
+        var nodes = zTree.getNodes();
+        console.log(treeNodes,targetNode,moveType)
+        var flag = false;
+        layer.confirm('确认移动吗？',{
+            btn:['确认','取消']
+        },function(index){
+            flag = true
+            // 第一个参数 要移动到的节点  第二个参数 被移动的节点
+            zTree.moveNode(targetNode,treeNodes[0],  moveType);
+            layer.close(index)
+        },function(index){
+            flag = false
+            layer.close(index)
+        })
+        return flag
+    //     return flag
+    //   if(confirm('确认拖拽吗？')){      
+    //     return true;
+    //   } else {
+    //     console.log('false')
+    //     return false;
+    //   }
   };
     function zTreeOnMouseUp(event, treeId, treeNode) {
   };
@@ -131,15 +140,24 @@ zTreeNodes =
         return false        
     }
     function beforeRemove(treeId, treeNode) {
-        className = (className === "dark" ? "":"dark");
-        showLog("[ "+getTime()+" beforeRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-        var zTree = $.fn.zTree.getZTreeObj("tree");
+        var zTree = $.fn.zTree.getZTreeObj('tree');
         zTree.selectNode(treeNode);
-        return confirm("Confirm delete node '" + treeNode.name + "' it?");
-        
+       var flag = false;
+       layer.confirm('确认删除吗？',{
+           btn:['确认','取消']
+       },function(index){
+           flag = true
+           zTree.removeChildNodes(treeNode)
+           zTree.removeNode(treeNode)
+            layer.close(index)
+       },function(index){
+            flag = false
+            layer.close(index)
+       })
+        return flag
     }
     function onRemove(e, treeId, treeNode) {
-        showLog("[ "+getTime()+" onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+     
     }
     function beforeRename(treeId, treeNode, newName, isCancel) {
        
