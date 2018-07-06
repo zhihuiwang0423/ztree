@@ -2,7 +2,9 @@ var setting = {
         view: {
             addHoverDom: addHoverDom,
             removeHoverDom: removeHoverDom,
-            selectedMulti: false
+            selectedMulti: false,
+            addDiyDom: addDiyDom
+
         },
         edit: {
             enable: true,
@@ -33,34 +35,39 @@ var setting = {
           dataType: "text",
           url: "http://host/getNode.php",
           autoParam: ["id", "name"]
-        },
-        treeNode: { name:"父节点1", icon:"/img/parent.gif"},
+        }
     };
 
 zTreeNodes =
  [
-    { id:1, pId:0, name:"can drag 1", open:true,drag:false},
-    { id:11, pId:1, name:"我是二级\n我是二级我是二级我是二级\n我是二级我是二级我是二级我是二级"},
-    { id:12, pId:1, name:"can drag 1-2", open:true},
-    { id:121, pId:12, name:"can drag 1-2-1"},
-    { id:122, pId:12, name:"can drag 1-2-2"},
-    { id:123, pId:12, name:"can drag 1-2-3"},
-    { id:13, pId:1, name:"can't drag 1-3", open:true, },
-    { id:131, pId:13, name:"如果我的内容多特别多，\n特别长，哈哈哈", },
-    { id:132, pId:13, name:"如果我的内容多特别多，特别长，哈哈哈", open: true},
-    {id: 1321, pId: 132, name: "can't drag 1-3-2-1"},
-    { id:133, pId:13, name:"can drag 1-3-3",open: true},
-    { id:14, pId:1, name:"can't drag 1-4", open:true, },
-    { id:141, pId:14, name:"can't drag 1-4-1", },
-    { id:142, pId:14, name:"can't drag 1-4-2 drag:false", },
-    { id:143, pId:14, name:"can drag 1-4-3"},
+    { id:1, pId:0, name:"can drag 1", open:true,drag:false,count: 10},
+    { id:11, pId:1, name:"我是二级\n我是二级我是二级我是二级\n我是二级我是二级我是二级我是二级",count:2},
+    { id:12, pId:1, name:"can drag 1-2", open:true,count:2},
+    { id:121, pId:12, name:"can drag 1-2-1",count:2},
+    { id:122, pId:12, name:"can drag 1-2-2",count:2},
+    { id:123, pId:12, name:"can drag 1-2-3",count:2},
+    { id:13, pId:1, name:"can't drag 1-3", open:true,count:2},
+    { id:131, pId:13, name:"如果我的内容多特别多，\n特别长，哈哈哈",count:2 },
+    { id:132, pId:13, name:"如果我的内容多特别多，特别长，哈哈哈", open: true,count:2},
+    {id: 1321, pId: 132, name: "can't drag 1-3-2-1",count:2},
+    { id:133, pId:13, name:"can drag 1-3-3",open: true,count:2},
+    { id:14, pId:1, name:"can't drag 1-4", open:true,count:2 },
+    { id:141, pId:14, name:"can't drag 1-4-1",count:2},
+    { id:142, pId:14, name:"can't drag 1-4-2 drag:false",count:2 },
+    { id:143, pId:14, name:"can drag 1-4-3",count:2},
     
     ]
     var log, className = "dark";
+    function addDiyDom(treeId, treeNode) {
+        var aObj = $("#" + treeNode.tId + "_span");
+        if ($('#'+treeNode.tId+'_count').length>0) return;
+        var editStr = "<span id='"+treeNode.tId+"_count' >("+treeNode.count+")</span>";
+        aObj.after(editStr);
+    };
+    
     function zTreeBeforeDrop(treeId, treeNodes, targetNode, moveType) {
       // treeNodes 当前拖拽选中的节点 targetNode是最后放入的位置节点信息
       if(targetNode.level === 0) {
-        //   confirm('不能拖拽到根节点');
           layer.alert('不能拖拽到根节点')
           return false
       }       
@@ -73,11 +80,7 @@ zTreeNodes =
     //           return false; 
     //         }
     //   })
-      if(confirm('确认拖拽吗？')){
-        // console.log("treeId :" + treeId)
-        // console.log( treeNodes)
-        // console.log(targetNode)
-        // console.log("moveType :" + moveType)
+      if(confirm('确认拖拽吗？')){      
         return true;
       } else {
         console.log('false')
@@ -85,25 +88,17 @@ zTreeNodes =
       }
   };
     function zTreeOnMouseUp(event, treeId, treeNode) {
-      
-      // alert(treeNode ? treeNode.tId + ", " + treeNode.name : "isRoot");
   };
     function zTreeOnDrop(event, treeId, treeNodes, targetNode, moveType) {
-      
-      // alert(treeNodes.length + "," + (targetNode ? (targetNode.tId + ", " + targetNode.name) : "isRoot" ));
   };
-    function zTreeOnClick(event, treeId, treeNode) {
-      // alert(treeNode.tId + ", " + treeNode.name);
-      console.log(treeNode)
-      var html = '<div  id="groupTitle"><ul><li><span  class="title" id="'+treeNode.tId+'_span">'+treeNode.name+'</span><span id="'+treeNode.tId+'_edit" data-name="'+treeNode.name+'" data-tId = "'+treeNode.tId+'" class="button edit hide"></span></li></ul></div><div class="item"><ul><li><span>成员*******'+treeNode.name+'</span></li></ul></div>'
+    function zTreeOnClick(event, treeId, treeNode) {    
+      var html = '<div  id="groupTitle"><ul><li><span  class="title" id="'+treeNode.tId+'_span">'+treeNode.name+'</span><span id="'+treeNode.tId+'_count">('+treeNode.count+')</span><span id="'+treeNode.tId+'_edit" data-name="'+treeNode.name+'" data-tId = "'+treeNode.tId+'" class="button edit hide"></span></li></ul></div><div class="item"><ul><li><span>成员*******'+treeNode.name+'</span></li></ul></div>'
       $('#list').html(html)
       rightIsEdit()
 
   };
     function zTreeOnDrag(event, treeId, treeNodes) {
-        // 选中后，鼠标开始拖拽时生效
-        // alert(treeNodes.length);
-        
+        // 选中后，鼠标开始拖拽时生效      
     };
     function beforeDrag(treeId, treeNodes) {
       // 根节点和禁止拖拽的节点不能拖拽
@@ -115,16 +110,16 @@ zTreeNodes =
     }
     function beforeEditName(treeId, treeNode) {
         // 编辑
-        // layer.alert(treeNode.name)
-        console.log(treeNode)
         layer.open({
             type: 1,
             // shadeClose: true, //开启遮罩关闭
             area:['200px','150px'],
-            content: '<input class="tree_'+treeNode.id+'" value="'+treeNode.name+'"/>',
+            content: '<input class="tree_'+treeNode.id+'" value="'+treeNode.name+'"/><div class="tips"></div>',
             btn:['确认','取消'],
             yes:function(index){
                 var value = $('.tree_'+treeNode.id).val();
+                if(!value){$(".tips").empty().html('请输入部门名称'); return false};
+                if(value.length>4){$('.tips').empty().html('部门名称最多20个字符');return false;}
                 $('#' + treeNode.tId+'_span').html(value)
                 $('#groupTitle span.title').html(value)
                 layer.close(index)
@@ -133,15 +128,7 @@ zTreeNodes =
                 layer.close(index)
             }
           });
-        return false
-        // className = (className === "dark" ? "":"dark");
-        // showLog("[ "+getTime()+" beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-        // var zTree = $.fn.zTree.getZTreeObj("tree");
-        // zTree.selectNode(treeNode);
-        // setTimeout(function() {
-        //     zTree.editName(treeNode);
-        // }, 0);
-        // return false;
+        return false        
     }
     function beforeRemove(treeId, treeNode) {
         className = (className === "dark" ? "":"dark");
@@ -155,35 +142,18 @@ zTreeNodes =
         showLog("[ "+getTime()+" onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
     }
     function beforeRename(treeId, treeNode, newName, isCancel) {
-        // 编辑保存之后的事件
-        layer.alert('beforRename')
-        // className = (className === "dark" ? "":"dark");
-        // showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
-        // if (newName.length == 0) {
-        //     setTimeout(function() {
-        //         var zTree = $.fn.zTree.getZTreeObj("tree");
-        //         zTree.cancelEditName();
-        //         alert("Node name can not be empty.");
-        //     }, 0);
-        //     return false;
-        // }
-        // return true;
+       
     }
     function onRename(e, treeId, treeNode, isCancel) {
-        // layer.alert('onrename')
-        // showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
+        
     }
     function showRemoveBtn(treeId, treeNode) {
         return treeNode.level;
-        // return !treeNode.isFirstNode;
-        // return true;
     }
     function showRenameBtn(treeId, treeNode) {
-        // return !treeNode.isLastNode;
         return true;
     }
     function showLog(str) {
-        // debugger
         if (!log) log = $("#log");
         log.append("<li class='"+className+"'>"+str+"</li>");
         if(log.children("li").length > 8) {
@@ -201,7 +171,7 @@ zTreeNodes =
 
     var newCount = 1;
     function addHoverDom(treeId, treeNode) {
-        var sObj = $("#" + treeNode.tId + "_span");
+        var sObj = $("#" + treeNode.tId + "_count");
         if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
         var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
             + "' title='add node' onfocus='this.blur();'></span>";
@@ -211,12 +181,14 @@ zTreeNodes =
             // 动态添加数据
             layer.open({
                 area:['200px','180px'],
-                content: '<input value="" class="tree_'+treeNode.id+'"/>',
+                content: '<input value="" class="tree_'+treeNode.id+'"/><div class="tips"></div>',
                 btn:['确认','取消'],
                 yes:function(index){
                     var zTree = $.fn.zTree.getZTreeObj("tree");
                     var value = $('.tree_'+treeNode.id).val();
-                    zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name: value});
+                    if(!value){$(".tips").empty().html('请输入部门名称'); return false};
+                    if(value.length>4){$('.tips').empty().html('部门名称最多20个字符');return false;}
+                    zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name: value,count:0});
                     layer.close(index)
                 },
                 btn2:function(index){
@@ -264,20 +236,17 @@ zTreeNodes =
     $(document).ready(function(){
         $.fn.zTree.init($("#tree"), setting, zTreeNodes);
         var treeObj = $.fn.zTree.getZTreeObj("tree");
-        var node = treeObj.getNodesByFilter(filter, true); // 仅查找一个节点
+        var treeNode = treeObj.getNodesByFilter(filter, true); // 仅查找一个节点
         var html1 = '<div  id="list" class="groupRight ztree"></div>'
         $("#tree").after(html1)
-        var html = '<div  id="groupTitle"><ul><li><span  class="title" id="'+node.tId+'_span">'+node.name+'</span><span id="'+node.tId+'_edit" data-name="'+node.name+'" data-tId = "'+node.tId+'" class="button edit hide"></span></li></ul></div><div class="item"><ul><li><span>成员1</span></li></ul></div>'
-        $('#list').append(html)     
+        var html = '<div  id="groupTitle"><ul><li><span  class="title" id="'+treeNode.tId+'_span">'+treeNode.name+'</span><span id="'+treeNode.tId+'_count">('+treeNode.count+')</span><span id="'+treeNode.tId+'_edit" data-name="'+treeNode.name+'" data-tId = "'+treeNode.tId+'" class="button edit hide"></span></li></ul></div><div class="item"><ul><li><span>成员1</span></li></ul></div>'
+        var html2 = '<button id="preview">preview</button> ';
+        $('#list').append(html).before(html2)    
         rightIsEdit()  
-        $('#save').click(function(){
-            // var nodes =  treeObj.transformToArray(treeObj.getNodes());;
-        })
         $('#preview').click(function(){
           var treeObj = $.fn.zTree.getZTreeObj("tree");
           var nodes = treeObj.getNodes();
           window.localStorage.setItem('previewData', JSON.stringify(nodes))
-          window.localStorage.setItem('Level', 6)
-          window.location.href = 'preview.html'
+          window.open('preview.html')
       })
     });

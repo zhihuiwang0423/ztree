@@ -10,21 +10,9 @@
 </head>
 <body>
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <!-- <div id="main" style="min-height: 800px;width:2000px;"></div> -->
-    <div id="main"></div>
+    <div id="main" style="min-height: 800px;width:2000px;"></div>
+    <!-- <div id="main"></div> -->
     <script type="text/javascript">
-    			window.onload = function(){
-            var canvas = document.createElement("main");
-            canvas.style.border = "solid 1px red";
-            canvas.id = "canvas";
-            var box = document.getElementById("canvas_box");
-            box.appendChild(canvas);
-            
-            //设置宽高一定要在canvas节点添加之后
-            document.getElementById("canvas").width = 600;
-            document.getElementById("canvas").height = 600;
-        
-            }
 
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
@@ -413,9 +401,9 @@
           ]
         }
         
-        var previewData = JSON.parse(localStorage.getItem('previewData'))
-    console.log(previewData[0])
-    console.log(data)
+        // var previewData = JSON.parse(localStorage.getItem('previewData'))
+    // console.log(previewData[0])
+    // console.log(data)
         // 指定图表的配置项和数据
         var option = {
               tooltip: {
@@ -426,8 +414,8 @@
                 {
                   type: 'tree',
 
-                  data: [previewData[0]],
-                  // data: [data],
+                  // data: [previewData[0]],
+                  data: [data],
                   layerPadding: 200,
                   left: '2%',
                   right: '2%',

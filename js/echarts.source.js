@@ -4341,7 +4341,7 @@ define('echarts/component/toolbox', ['require', './base', 'zrender/shape/Line', 
             else {
                 image = this.myChart.getConnectedDataURL(imgType);
             }
-             
+             // 点击直接保存
             var downloadDiv = document.createElement('div');
             downloadDiv.id = '__echarts_download_wrap__';
             downloadDiv.style.cssText = 'position:fixed;'
@@ -4353,8 +4353,7 @@ define('echarts/component/toolbox', ['require', './base', 'zrender/shape/Line', 
                 + 'width:100%;'
                 + 'height:100%;'
                 + 'line-height:' 
-                + document.documentElement.clientHeight + 'px;';
-                
+                + document.documentElement.clientHeight + 'px;';                
             var downloadLink = document.createElement('a');
             //downloadLink.onclick = _saveImageForIE;
             downloadLink.href = image;
@@ -4376,9 +4375,26 @@ define('echarts/component/toolbox', ['require', './base', 'zrender/shape/Line', 
             
             downloadDiv.appendChild(downloadLink);
             document.body.appendChild(downloadDiv);
+            if ((!!window.ActiveXObject || 'ActiveXObject' in window)) {    
+                if(!(navigator.appVersion.match(/9./i)=="9.")){
+                    document.getElementById("__echarts_download_wrap__").style.display = "none"
+                    navigator.msSaveBlob(dataURLtoBlob(image), 'ECharts'+ '.' + imgType );
+                }          
+            } else {
+                document.getElementById("__echarts_download_wrap__").style.display = "none"
+                downloadLink.click()
+            }
             downloadLink = null;
             downloadDiv = null;
-            
+            // 将base64转成blob
+            function dataURLtoBlob(dataurl) {
+                var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new Blob([u8arr], { type: mime });
+        }
             setTimeout(function (){
                 var _d = document.getElementById('__echarts_download_wrap__');
                 if (_d) {
