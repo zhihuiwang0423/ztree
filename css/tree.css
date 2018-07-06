@@ -1,0 +1,5 @@
+.group{min-width:1200px;margin: 0 auto;}
+.group .inner{width:1200px;margin: 0 auto;}
+.groupLeft{width: 500px;border:1px solid #0f0;float:left;}
+.groupRight{width: 500px;border:1px solid #0f0;float:right;}
+.hide{display:none!important;}
