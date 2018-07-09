@@ -3,7 +3,8 @@ var setting = {
             addHoverDom: addHoverDom,
             removeHoverDom: removeHoverDom,
             selectedMulti: false,
-            addDiyDom: addDiyDom
+            addDiyDom: addDiyDom,
+            showLine: false
 
         },
         edit: {
@@ -41,10 +42,10 @@ var setting = {
 
 zTreeNodes =
  [
-    { id:1, pId:0, name:"can drag 1", open:true,drag:false,count: 10},
+    { id:1, pId:0, name:"一二三四五六七八九十一二三四五六七八九十", open:true,drag:false,count: 10},
     { id:11, pId:1, name:"一二三四五六七八九十",count:2},
-    { id:12, pId:1, name:"can drag 1-2", open:true,count:2},
-    { id:121, pId:12, name:"can drag 1-2-1",count:2},
+    { id:12, pId:1, name:"文化部", open:true,count:2},
+    { id:121, pId:12, name:"人力资源部",count:2},
     { id:122, pId:12, name:"can drag 1-2-2",count:2},
     { id:123, pId:12, name:"can drag 1-2-3",count:2},
     { id:13, pId:1, name:"can't drag 1-3", open:true,count:2},
@@ -52,7 +53,7 @@ zTreeNodes =
     { id:132, pId:13, name:"如果我的内容多特别多，特别长，哈哈哈", open: true,count:2},
     {id: 1321, pId: 132, name: "can't drag 1-3-2-1",count:2},
     { id:133, pId:13, name:"can drag 1-3-3",open: true,count:2},
-    { id:14, pId:1, name:"can't drag 1-4", open:true,count:2 },
+    { id:14, pId:1, name:"一二三四五六七八九十一二三四五六七八九十", open:true,count:2 },
     { id:141, pId:14, name:"can't drag 1-4-1",count:2},
     { id:142, pId:14, name:"can't drag 1-4-2 drag:false",count:2 },
     { id:143, pId:14, name:"can drag 1-4-3",count:2,open:true},
@@ -95,21 +96,14 @@ zTreeNodes =
             flag = false
             layer.close(index)
         })
-        return flag
-    //     return flag
-    //   if(confirm('确认拖拽吗？')){      
-    //     return true;
-    //   } else {
-    //     console.log('false')
-    //     return false;
-    //   }
+        return flag   
   };
     function zTreeOnMouseUp(event, treeId, treeNode) {
   };
     function zTreeOnDrop(event, treeId, treeNodes, targetNode, moveType) {
   };
   function RightHTML(treeNode){
-    var html = '<div  id="groupTitle"><ul><li><span  class="title" id="'+treeNode.tId+'_span">'+treeNode.name+'</span><span id="'+treeNode.tId+'_count">('+treeNode.count+')</span><span id="'+treeNode.tId+'_edit" data-name="'+treeNode.name+'" data-tId = "'+treeNode.tId+'" class="button edit hide"></span></li></ul></div><div class="item"><ul><li><span>成员*******'+treeNode.name+'</span></li></ul></div>'
+    var html = '<div  id="groupTitle"><ul class="groupTop"><li><span  class="title" id="'+treeNode.tId+'_span">'+treeNode.name+'</span><span id="'+treeNode.tId+'_edit" data-name="'+treeNode.name+'" data-tId = "'+treeNode.tId+'" class="button edit hide"></span></li><li class="total">当前部门共有<span id="'+treeNode.tId+'_count">('+treeNode.count+')</span>人</li></ul></div><div class="item"><ul><li><span class="num fw">序号</span><span class="name fw">姓名</span><span class="tel fw">手机号</span></li><li><span class="num">1</span><span class="name">智慧</span><span class="tel">13711111111</span></li></ul></div>';
       return html
   }
     function zTreeOnClick(event, treeId, treeNode) { 
@@ -140,7 +134,10 @@ zTreeNodes =
             yes:function(index){
                 var value = $('.tree_'+treeNode.id).val();
                 if(!value){$(".tips").empty().html('请输入部门名称'); return false};
-                if(value.length>4){$('.tips').empty().html('部门名称最多20个字符');return false;}
+                if(value.length>20){$('.tips').empty().html('部门名称最多20个字符');return false;}
+                if(value.length>10){
+                    value = value.substr(0,10)+'\n'+value.substr(10,value.length);
+                }
                 $('#' + treeNode.tId+'_span').html(value)
                 $('#groupTitle span.title').html(value)
                 layer.close(index)
@@ -188,6 +185,7 @@ zTreeNodes =
     function addHoverDom(treeId, treeNode) {
         var sObj = $("#" + treeNode.tId + "_count");
         if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+        // $("#"+treeNode.tId).find('a').addClass('curSelectedNode')
         var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
             + "' title='add node' onfocus='this.blur();'></span>";
         sObj.after(addStr);
@@ -202,7 +200,15 @@ zTreeNodes =
                     var zTree = $.fn.zTree.getZTreeObj("tree");
                     var value = $('.tree_'+treeNode.id).val();
                     if(!value){$(".tips").empty().html('请输入部门名称'); return false};
-                    if(value.length>4){$('.tips').empty().html('部门名称最多20个字符');return false;}
+                    if(value.length>20){
+                        $('.tips').empty().html('部门名称最多20个字符');
+                        return false;
+                    }
+                    if(value.length>10){
+                        value = value.substr(0,10)+'\n'+value.substr(10,value.length);
+                        console.log(value.length)
+                        // return str
+                    }
                     zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name: value,count:0});
                     layer.close(index)
                 },
@@ -252,11 +258,11 @@ zTreeNodes =
         $.fn.zTree.init($("#tree"), setting, zTreeNodes);
         var treeObj = $.fn.zTree.getZTreeObj("tree");
         var treeNode = treeObj.getNodesByFilter(filter, true); // 仅查找一个节点
-        var html0 = '<div  id="list" class="groupRight ztree"></div>'
-        $("#tree").after(html0)
+        var html0 = '<div id="list" class="groupRight ztree"></div>'
         var html1 =  RightHTML(treeNode)   
-        var html2 = '<button id="preview">preview</button> ';
-        $('#list').append(html1).before(html2)    
+        var html2 = '<button id="preview">组织预览</button> ';
+        $(".groupLeft").after(html0).after(html2)
+        $('#list').append(html1)
         rightIsEdit()  
         $('#preview').click(function(){
           var treeObj = $.fn.zTree.getZTreeObj("tree");

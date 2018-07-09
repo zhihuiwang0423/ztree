@@ -1,7 +1,7 @@
 
     var previewData = JSON.parse(localStorage.getItem('previewData'))
     // console.log(previewData)
-    $('#main').width(10*300); // 最底层叶子节点数值*300
+    $('#main').width(10*360); // 最底层叶子节点数值*300
     $('#main').height(previewData[0].children.length*200); // 多少层级
     // $('#main').width(window.innerWidth-20)
     // $('#main').height(window.innerHeight-20)
@@ -18,6 +18,8 @@
           calculable : true,         
           toolbox: {
             show: true,
+            x:'left',
+            y:'left',
             　　feature: {
             　　　　saveAsImage: {
                        type: 'jpeg',
@@ -39,7 +41,7 @@
                   nodePadding: 50, // 节点间距
                   symbol: 'none',// circle' | 'rectangle' | 'triangle' | 'diamond' |
                   //'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond' 
-                  symbolSize: [200, 50],
+                  symbolSize: [260, 50],
                   itemStyle: {
                       normal: {
                         color: '#abc',

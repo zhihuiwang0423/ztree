@@ -1,5 +1,11 @@
 .group{min-width:1200px;margin: 0 auto;}
-.group .inner{width:1200px;margin: 0 auto;}
-.groupLeft{width: 500px;border:1px solid #0f0;float:left;}
+.groupLeft{width:670px;float:left;}
 .groupRight{width: 500px;border:1px solid #0f0;float:right;}
+.groupRight .groupTop li.total{line-height:40px;overflow:auto;}
+.groupRight .item ul li{list-style-type: none;}
+.groupRight .item ul li .fw{font-weight: bold}
+.groupRight .item ul li span{display:inline-block;line-height:30px;}
+.groupRight .item ul li .num{ width: 100px;text-align: center;}
+.groupRight .item ul li .name{width: 100px;text-align: center;}
+.groupRight .item ul li .tel{width: 200px;text-align: center;}
 .hide{display:none!important;}
