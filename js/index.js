@@ -31,11 +31,12 @@ var setting = {
             onMouseUp: zTreeOnMouseUp
         },
         async: {
-          enable: true,
-          dataType: "text",
-          url: "http://host/getNode.php",
-          autoParam: ["id", "name"]
-        }
+            enable: true,
+            url:"../asyncData/getNodes.php",
+            autoParam:["id", "name=n", "level=lv"],
+            otherParam:{"otherParam":"zTreeAsyncTest"},
+            dataFilter: asyncFilter
+        },
     };
 
 zTreeNodes =
@@ -59,6 +60,13 @@ zTreeNodes =
     
     ]
     var log, className = "dark";
+    function asyncFilter(treeId, parentNode, childNodes) {
+        if (!childNodes) return null;
+        for (var i=0, l=childNodes.length; i<l; i++) {
+            childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+        }
+        return childNodes;
+    }
     function addDiyDom(treeId, treeNode) {
         var aObj = $("#" + treeNode.tId + "_span");
         if ($('#'+treeNode.tId+'_count').length>0) return;
@@ -100,8 +108,12 @@ zTreeNodes =
   };
     function zTreeOnDrop(event, treeId, treeNodes, targetNode, moveType) {
   };
-    function zTreeOnClick(event, treeId, treeNode) {    
-      var html = '<div  id="groupTitle"><ul><li><span  class="title" id="'+treeNode.tId+'_span">'+treeNode.name+'</span><span id="'+treeNode.tId+'_count">('+treeNode.count+')</span><span id="'+treeNode.tId+'_edit" data-name="'+treeNode.name+'" data-tId = "'+treeNode.tId+'" class="button edit hide"></span></li></ul></div><div class="item"><ul><li><span>成员*******'+treeNode.name+'</span></li></ul></div>'
+  function RightHTML(treeNode){
+    var html = '<div  id="groupTitle"><ul><li><span  class="title" id="'+treeNode.tId+'_span">'+treeNode.name+'</span><span id="'+treeNode.tId+'_count">('+treeNode.count+')</span><span id="'+treeNode.tId+'_edit" data-name="'+treeNode.name+'" data-tId = "'+treeNode.tId+'" class="button edit hide"></span></li></ul></div><div class="item"><ul><li><span>成员*******'+treeNode.name+'</span></li></ul></div>'
+      return html
+  }
+    function zTreeOnClick(event, treeId, treeNode) { 
+       var html =  RightHTML(treeNode)   
       $('#list').html(html)
       rightIsEdit()
 
@@ -166,27 +178,12 @@ zTreeNodes =
         
     }
     function showRemoveBtn(treeId, treeNode) {
-        return treeNode.level;
+        // return treeNode.level ;
+        return !treeNode.count
     }
     function showRenameBtn(treeId, treeNode) {
         return true;
     }
-    function showLog(str) {
-        if (!log) log = $("#log");
-        log.append("<li class='"+className+"'>"+str+"</li>");
-        if(log.children("li").length > 8) {
-            log.get(0).removeChild(log.children("li")[0]);
-        }
-    }
-    function getTime() {
-        var now= new Date(),
-        h=now.getHours(),
-        m=now.getMinutes(),
-        s=now.getSeconds(),
-        ms=now.getMilliseconds();
-        return (h+":"+m+":"+s+ " " +ms);
-    }
-
     var newCount = 1;
     function addHoverDom(treeId, treeNode) {
         var sObj = $("#" + treeNode.tId + "_count");
@@ -255,11 +252,11 @@ zTreeNodes =
         $.fn.zTree.init($("#tree"), setting, zTreeNodes);
         var treeObj = $.fn.zTree.getZTreeObj("tree");
         var treeNode = treeObj.getNodesByFilter(filter, true); // 仅查找一个节点
-        var html1 = '<div  id="list" class="groupRight ztree"></div>'
-        $("#tree").after(html1)
-        var html = '<div  id="groupTitle"><ul><li><span  class="title" id="'+treeNode.tId+'_span">'+treeNode.name+'</span><span id="'+treeNode.tId+'_count">('+treeNode.count+')</span><span id="'+treeNode.tId+'_edit" data-name="'+treeNode.name+'" data-tId = "'+treeNode.tId+'" class="button edit hide"></span></li></ul></div><div class="item"><ul><li><span>成员1</span></li></ul></div>'
+        var html0 = '<div  id="list" class="groupRight ztree"></div>'
+        $("#tree").after(html0)
+        var html1 =  RightHTML(treeNode)   
         var html2 = '<button id="preview">preview</button> ';
-        $('#list').append(html).before(html2)    
+        $('#list').append(html1).before(html2)    
         rightIsEdit()  
         $('#preview').click(function(){
           var treeObj = $.fn.zTree.getZTreeObj("tree");

@@ -1,17 +1,21 @@
 
     var previewData = JSON.parse(localStorage.getItem('previewData'))
-        console.log(previewData)
+    // console.log(previewData)
     $('#main').width(10*300); // 最底层叶子节点数值*300
     $('#main').height(previewData[0].children.length*200); // 多少层级
-    // $('#main').width(window.innerWidth-50)
-    // $('#main').height(window.innerHeight-50)
-    console.log($('#main').height())
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
-
+    // $('#main').width(window.innerWidth-20)
+    // $('#main').height(window.innerHeight-20)
+    // console.log($('#main').height())
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    myChart.showLoading({
+        text: '正在努力的读取数据中...',    //loading话术
+    });
+    
+        myChart.hideLoading();
         // 指定图表的配置项和数据
         option = {
-          calculable : true,
+          calculable : true,         
           toolbox: {
             show: true,
             　　feature: {
@@ -31,48 +35,40 @@
                   rootLocation: {x:'left', y: '120px'}, // 根节点位置  {x: 'center',y: 10}
                   // direction:'inverse',
                   roam:true, // 是否开启滚轮放大缩小
-                  layerPadding:100,
-                  nodePadding: 60,
+                  layerPadding:100, // 层间距
+                  nodePadding: 50, // 节点间距
                   symbol: 'none',// circle' | 'rectangle' | 'triangle' | 'diamond' |
                   //'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond' 
-                  symbolSize: [190, 50],
+                  symbolSize: [200, 50],
                   itemStyle: {
                       normal: {
+                        color: '#abc',
                           label: {
-                            show: true,
+                            show: true,                            
                             position: 'inside',
                             textStyle: {
                                 color: '#111',
                                 fontSize: 12,
-                                fontWeight:  'bolder'
-                            }
-                          },
+                                fontWeight:  'bolder',
+                            },
+                            formatter:function(v){                               
+                                var text=v.name;
+                                return  text.length>10?text.substr(0,10)+"...":text;
+                             },
+                          },                      
                           lineStyle: {
                               color: '#0f8',
                               width: 1.5,
                               type: 'broken' // 'curve'|'broken'|'solid'|'dotted'|'dashed'
-                          },
-                          areaStyle: {
-                            color: '#dd9'
-                          },
-                          labelLine: {
-                            show: true,
-                            lineStyle: {
-                                color: 'red',
-                                length: 20
-                            }
-                        }
+                          },                       
                       },
                       emphasis: {
-                        label: {
-                            show: false
-                        },
-                        labelLine: {
-                            show: false
-                        }
+                        borderWidth: 0,
+                        color: '#abc'
                       }
                   },
                   data:[previewData[0]],
+                  
                 //   data: [
                 //       {
                 //           name: '卓朗科技\n有限公司\n智慧',
