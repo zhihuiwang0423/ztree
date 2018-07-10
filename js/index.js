@@ -103,7 +103,7 @@ zTreeNodes =
     function zTreeOnDrop(event, treeId, treeNodes, targetNode, moveType) {
   };
   function RightHTML(treeNode){
-    var html = '<div  id="groupTitle"><ul class="groupTop"><li><span  class="title" id="'+treeNode.tId+'_span">'+treeNode.name+'</span><span id="'+treeNode.tId+'_edit" data-name="'+treeNode.name+'" data-tId = "'+treeNode.tId+'" class="button edit hide"></span></li><li class="total">当前部门共有<span id="'+treeNode.tId+'_count">('+treeNode.count+')</span>人</li></ul></div><div class="item"><ul><li><span class="num fw">序号</span><span class="name fw">姓名</span><span class="tel fw">手机号</span></li><li><span class="num">1</span><span class="name">智慧</span><span class="tel">13711111111</span></li></ul></div>';
+    var html = '<div  id="groupTitle"><ul class="groupTop"><li class="groupEdit"><span  class="title" id="'+treeNode.tId+'_span">'+treeNode.name+'</span><span id="'+treeNode.tId+'_edit" data-name="'+treeNode.name+'" data-tId = "'+treeNode.tId+'" class="button edit hide"></span></li><li class="total">当前部门共有<span id="'+treeNode.tId+'_count">('+treeNode.count+')</span>人</li></ul></div><div class="item"><ul><li><span class="num fw">序号</span><span class="name fw">姓名</span><span class="tel fw">手机号</span></li><li><span class="num">1</span><span class="name">智慧</span><span class="tel">13711111111</span></li></ul></div>';
       return html
   }
     function zTreeOnClick(event, treeId, treeNode) { 
@@ -185,11 +185,12 @@ zTreeNodes =
     function addHoverDom(treeId, treeNode) {
         var sObj = $("#" + treeNode.tId + "_count");
         if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-        // $("#"+treeNode.tId).find('a').addClass('curSelectedNode')
         var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
             + "' title='add node' onfocus='this.blur();'></span>";
         sObj.after(addStr);
         var btn = $("#addBtn_"+treeNode.tId);
+        // $('a').removeClass('curSelectedNode')
+        btn.parents('a').addClass('curSelectedNode')
         if (btn) btn.bind("click", function(){
             // 动态添加数据
             layer.open({
@@ -220,14 +221,15 @@ zTreeNodes =
         });
     };
     function removeHoverDom(treeId, treeNode) {
+        $("#addBtn_"+treeNode.tId).parents('a').removeClass('curSelectedNode')
         $("#addBtn_"+treeNode.tId).unbind().remove();
     };
     function filter(node) {
         return (node.level === 0);
     }
     function rightIsEdit(){
-        $('#groupTitle').hover(function(){
-            $('#groupTitle span.edit').removeClass('hide')
+        $('#groupTitle li.groupEdit').hover(function(){
+            $('#groupTitle  span.edit').removeClass('hide')
         },function(){
             $('#groupTitle span.edit').addClass('hide')
         })

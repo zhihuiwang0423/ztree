@@ -1,7 +1,7 @@
 .group{min-width:1200px;margin: 0 auto;}
 .groupLeft{width:670px;float:left;}
 .groupRight{width: 500px;border:1px solid #0f0;float:right;}
-.groupRight .groupTop li.total{line-height:40px;overflow:auto;}
+.groupRight .groupTop li.total span{line-height:40px;display:inline;}
 .groupRight .item ul li{list-style-type: none;}
 .groupRight .item ul li .fw{font-weight: bold}
 .groupRight .item ul li span{display:inline-block;line-height:30px;}
